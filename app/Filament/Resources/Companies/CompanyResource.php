@@ -19,13 +19,22 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
-    protected static string|null|\UnitEnum $navigationGroup = 'Business';
+    protected static string|null|\UnitEnum $navigationGroup = 'Administration';
 
     protected static ?int $navigationSort = 1;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
 
     protected static ?string $recordTitleAttribute = 'Company';
+    public static function getModelLabel(): string
+    {
+        return 'CPS Details';        // singular (ex: "Create engineer")
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'CPS Details';       // plural (ex: "All engineers")
+    }
 
     public static function form(Schema $schema): Schema
     {

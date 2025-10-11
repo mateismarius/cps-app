@@ -43,10 +43,10 @@ class CreateUser extends CreateRecord
                 $user->syncRoles($formData['roles']);
             }
 
-            // Assign permissions if provided
-            if (isset($formData['permissions'])) {
-                $user->syncPermissions($formData['permissions']);
-            }
+//            // Assign permissions if provided
+//            if (isset($formData['permissions'])) {
+//                $user->syncPermissions($formData['permissions']);
+//            }
 
             // 2. Create Employee if user_type is employee
             if ($user->user_type === 'employee' && isset($formData['employee'])) {

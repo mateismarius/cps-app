@@ -11,6 +11,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -30,8 +31,20 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Orange,
             ])
+            ->navigationGroups([
+                'Business',
+                'HR',
+                'Operations',
+                'Finance',
+                'Assets',
+                'Administration',
+            ])
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_START,
+                fn (): string => '<style>.fi-sidebar{width:18rem!important}</style>'
+            )
             ->brandName('CPS Network Communications')
             ->brandLogo(asset('images/cps-logo.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -60,6 +73,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
+                ->navigationGroup('Administration')
+                ->navigationSort(3)
             ]);
     }
 }
