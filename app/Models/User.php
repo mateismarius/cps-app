@@ -42,6 +42,6 @@ class User extends Authenticatable
 
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
-        return $this->hasRole('super_admin');
+        return true;
     }
 }
