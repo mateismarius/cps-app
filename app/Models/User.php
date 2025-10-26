@@ -39,4 +39,9 @@ class User extends Authenticatable
         return ! is_null($this->two_factor_secret) &&
             ! is_null($this->two_factor_confirmed_at);
     }
+
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return $this->hasRole('super_admin');
+    }
 }
