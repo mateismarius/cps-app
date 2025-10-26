@@ -24,13 +24,6 @@ class ScheduleSeeder extends Seeder
         $startDate = Carbon::now()->subDays(7);
         $endDate = Carbon::now()->addDays(14);
 
-        $shiftsData = [
-            ['start' => '08:00:00', 'end' => '16:00:00'], // Day shift
-            ['start' => '09:00:00', 'end' => '17:00:00'], // Standard shift
-            ['start' => '07:00:00', 'end' => '15:00:00'], // Early shift
-            ['start' => '14:00:00', 'end' => '22:00:00'], // Late shift
-        ];
-
         $locations = [
             'Main Site - Ground Floor',
             'Main Site - First Floor',
@@ -69,14 +62,11 @@ class ScheduleSeeder extends Seeder
                         ->exists();
 
                     if (!$exists) {
-                        $shift = $shiftsData[array_rand($shiftsData)];
 
                         Schedule::create([
                             'project_id' => $project->id,
                             'engineer_id' => $engineer->user_id,
                             'date' => $currentDate->format('Y-m-d'),
-                            'shift_start' => $shift['start'],
-                            'shift_end' => $shift['end'],
                             'location' => $locations[array_rand($locations)],
                             'notes' => rand(0, 4) > 0 ? null : 'Special requirements: ' . ['PPE required', 'Access restricted', 'Client liaison needed', 'Equipment delivery'][rand(0, 3)],
                         ]);
