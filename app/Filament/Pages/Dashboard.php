@@ -15,11 +15,7 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\StatsOverview::class,
-            \App\Filament\Widgets\ProjectsChart::class,
-            \App\Filament\Widgets\RecentTimesheets::class,
-            \App\Filament\Widgets\UpcomingSchedule::class,
-            \App\Filament\Widgets\ExpiringCertifications::class,
+
         ];
     }
 }

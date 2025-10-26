@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Schedule;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -46,6 +47,12 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'pendingReportsCount' => $request->user() && $request->user()->hasRole('engineer')
+                ? Schedule::where('engineer_id', $request->user()->id)
+                    ->where('date', '<', now())
+                    ->whereDoesntHave('timesheets')
+                    ->count()
+                : 0,
         ];
     }
 }

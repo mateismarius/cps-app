@@ -13,30 +13,26 @@ class DatabaseSeeder extends Seeder
     {
         // Run roles and permissions first
         $this->call([
-            RolesAndPermissionsSeeder::class,
+            // 1. Baza - Companies și Users
+            CompanySeeder::class,
+            UserSeeder::class,
+
+            // 2. Clients și Engineers (depind de companies și users)
+            ClientSeeder::class,
+            EngineerSeeder::class,
+
+            // 3. Projects (depinde de companies și clients)
+            ProjectSeeder::class,
+
+            // 4. Schedules (depinde de projects și engineers)
+            ScheduleSeeder::class,
+
+            // 5. Timesheets (depinde de schedules)
+            TimesheetSeeder::class,
+
+            // 6. Reports (depinde de timesheets)
+            ReportSeeder::class,
         ]);
 
-        // Create demo user
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@cpsnetwork.com',
-        ]);
-
-        $user->assignRole('super_admin');
-
-        // Seed company data
-        \App\Models\Company::create([
-            'name' => 'CPS Network Communications',
-            'trading_name' => 'CPS Network',
-            'registration_number' => '12345678',
-            'vat_number' => 'GB123456789',
-            'email' => 'info@cpsnetwork.com',
-            'phone' => '+44 20 1234 5678',
-            'address' => '123 Business Street',
-            'city' => 'London',
-            'postcode' => 'E1 6AN',
-            'country' => 'UK',
-            'status' => 'active',
-        ]);
     }
 }
