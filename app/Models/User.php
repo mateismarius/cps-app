@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -42,8 +43,31 @@ class User extends Authenticatable implements FilamentUser
             ! is_null($this->two_factor_confirmed_at);
     }
 
-    public function canAccessPanel(\Filament\Panel $panel): bool
+    /**
+     * Determine which Filament panels the user can access
+     */
+    public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('super_admin');
+        return match($panel->getId()) {
+            'admin' => $this->hasRole('super_admin'),
+            'engineer' => $this->hasRole('engineer'), // ← Important!
+            default => false,
+        };
+    }
+
+    /**
+     * Get the default panel for this user
+     */
+    public function getFilamentDefaultPanel(): string
+    {
+        if ($this->hasRole('super_admin')) {
+            return 'admin';
+        }
+
+        if ($this->hasRole('engineer')) {
+            return 'engineer';
+        }
+
+        return 'admin';
     }
 }

@@ -30,6 +30,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->registration(false)
+            ->passwordReset()
             ->authGuard('web')
             ->colors([
                 // Primary: Vibrant Orange - warm and energetic

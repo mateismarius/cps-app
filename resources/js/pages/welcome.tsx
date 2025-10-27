@@ -35,7 +35,7 @@ export default function Welcome() {
                             Simplify Your Operations.
                         </h1>
                         <p className="text-muted-foreground text-lg leading-relaxed">
-                            CPS-ERP is your centralized platform for managing projects,
+                            CPS-Enterprise Resource Planning is your centralized platform for managing projects,
                             schedules, invoices and teams — built for efficiency and clarity.
                         </p>
 

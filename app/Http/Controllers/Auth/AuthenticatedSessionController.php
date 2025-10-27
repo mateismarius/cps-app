@@ -17,12 +17,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Show the login page.
      */
-    public function create(Request $request): Response
+    public function create(Request $request): RedirectResponse
     {
-        return Inertia::render('auth/login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => $request->session()->get('status'),
-        ]);
+//        return Inertia::render('auth/login', [
+//            'canResetPassword' => Route::has('password.request'),
+//            'status' => $request->session()->get('status'),
+//        ]);
+        if (auth()->check()) {
+            return $this->redirectBasedOnRole(auth()->user());
+        }
+
+        // Redirect to Filament admin login
+        return redirect('/admin/login');
     }
 
     /**
@@ -45,11 +51,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if ($user->hasRole('engineer')) {
-            return redirect()->intended('/engineer/dashboard');
+        return $this->redirectBasedOnRole($user);
+    }
+
+    protected function redirectBasedOnRole($user): RedirectResponse
+    {
+        if ($user->hasRole('super_admin')) {
+            return redirect('/admin');
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if ($user->hasRole('engineer')) {
+            return redirect('/engineer'); // Va fi Filament panel
+        }
+
+        // Default to admin for any other role
+        return redirect('/admin');
     }
 
     /**
@@ -62,6 +78,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/admin/login');
     }
 }

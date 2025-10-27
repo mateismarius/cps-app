@@ -1,36 +1,71 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react'
+import type { SharedData } from '@/types'
+import { dashboard, login} from '@/routes'
+import AppLogo from '@/components/app-logo';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard().url,
-    },
-];
+export default function Welcome() {
+    const { auth } = usePage<SharedData>().props
 
-export default function Dashboard() {
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+        <>
+            <Head title="CPS Network ERP Platform">
+                <link rel="preconnect" href="https://fonts.bunny.net" />
+                <link
+                    href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
+                    rel="stylesheet"
+                />
+            </Head>
+
+            <div className="min-h-screen flex flex-col bg-background text-foreground">
+                {/* Header */}
+                <header className="flex items-center justify-between px-6 py-4 border-b border-border">
+                    <div className="flex items-center space-x-3">
+                        <AppLogo />
+                        <span className="text-lg font-semibold tracking-tight">
+
+            </span>
                     </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                </header>
+
+                {/* Hero Section */}
+                <main className="flex flex-col lg:flex-row flex-1 items-center justify-center px-8 py-16">
+                    <div className="flex-1 max-w-xl text-center lg:text-left space-y-5">
+                        <h1 className="text-4xl font-bold tracking-tight text-primary">
+                            Simplify Your Operations.
+                        </h1>
+                        <p className="text-muted-foreground text-lg leading-relaxed">
+                            CPS-ERP is your centralized platform for managing projects,
+                            schedules, invoices and teams — built for efficiency and clarity.
+                        </p>
+
+                        <div className="flex justify-center lg:justify-start gap-4 pt-4">
+                            {auth.user ? (
+                                <Link
+                                    href={dashboard()}
+                                    className="rounded-md bg-primary text-primary-foreground px-6 py-2 font-medium hover:bg-primary/90 transition"
+                                >
+                                    Go to Dashboard
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link
+                                        href={login()}
+                                        className="rounded-md bg-primary text-primary-foreground px-6 py-2 font-medium hover:bg-primary/90 transition"
+                                    >
+                                        Sign In
+                                    </Link>
+                                </>
+                            )}
+                        </div>
                     </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
+                </main>
+
+                {/* Footer */}
+                <footer className="border-t border-border py-4 text-center text-xs text-muted-foreground">
+                    © {new Date().getFullYear()} CPS Network · ERP Platform
+                </footer>
             </div>
-        </AppLayout>
-    );
+        </>
+    )
 }
