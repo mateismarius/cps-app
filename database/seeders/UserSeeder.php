@@ -111,10 +111,11 @@ class UserSeeder extends Seeder
             User::firstOrCreate(['email' => $userData['email']], $userData);
         }
 
-        // --- Create Super Admin role ---
+        // --- Create Roles ---
         $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
+        $engineerRole = Role::firstOrCreate(['name' => 'engineer']);
 
-        // Assign all existing permissions (if any)
+        // Assign all permissions to super_admin
         $allPermissions = Permission::all();
         if ($allPermissions->count() > 0) {
             $superAdminRole->syncPermissions($allPermissions);
@@ -130,15 +131,26 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Assign role
         $superAdmin->assignRole($superAdminRole);
+        $superAdmin->givePermissionTo(Permission::all());
 
-        // Optional: force the role to always have full access
-        // even if new permissions are added later
-        if (method_exists($superAdmin, 'givePermissionTo')) {
-            $superAdmin->givePermissionTo(Permission::all());
+        // --- Assign Engineer role to selected users ---
+        $engineerEmails = [
+            'james.wilson@tvc-ltd.co.uk',
+            'tom.harris@tvc-ltd.co.uk',
+            'peter.davies@nes-ltd.co.uk',
+            'mark.johnson@nes-ltd.co.uk',
+            'john.smith@contractor.uk',
+            'michael.brown@engineer.uk',
+        ];
+
+        foreach ($engineerEmails as $email) {
+            $user = User::where('email', $email)->first();
+            if ($user) {
+                $user->assignRole($engineerRole);
+            }
         }
 
-        $this->command->info('✅ Super Admin user and role created successfully!');
+        $this->command->info('✅ Super Admin & Engineer roles created and users assigned successfully!');
     }
 }
