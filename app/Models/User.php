@@ -7,6 +7,8 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Filament\Models\Contracts\FilamentUser;
+
 
 class User extends Authenticatable implements FilamentUser
 {
