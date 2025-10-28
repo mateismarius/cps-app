@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Event;
+use Filament\Events\Auth\Registered;
+use Illuminate\Auth\Events\Login;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +39,13 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+
+        // Redirect engineers to their panel after login
+        Event::listen(Login::class, function (Login $event) {
+            if ($event->user->hasRole('engineer') && !$event->user->hasRole('super_admin')) {
+                session()->put('url.intended', '/engineer');
+            }
+        });
 
     }
 }
