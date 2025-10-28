@@ -11,12 +11,18 @@ class CustomLoginResponse implements LoginResponse
     public function toResponse($request): RedirectResponse|Redirector
     {
         $user = auth()->user();
+        $panel = Filament::getCurrentPanel();
 
-        // Redirect based on user role
-        return redirect()->intended(match (true) {
-            $user->hasRole('engineer') && !$user->hasRole('super_admin') => '/engineer',
-            $user->hasRole('super_admin') => filament()->getUrl(), // stays on /admin
-            default => filament()->getUrl(),
-        });
+        // If logging in from engineer panel, stay there
+        if ($panel->getId() === 'engineer') {
+            return redirect('/engineer');
+        }
+
+        // If logging in from admin panel, redirect based on role
+        if ($user->hasRole('engineer') && !$user->hasRole('super_admin')) {
+            return redirect('/engineer');
+        }
+
+        return redirect('/admin');
     }
 }
