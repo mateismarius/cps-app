@@ -30,6 +30,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->bootUsing(function () {
+                app()->bind(LoginResponse::class, CustomLoginResponse::class);
+            })
             ->registration(false)
             ->passwordReset()
             ->authGuard('web')
