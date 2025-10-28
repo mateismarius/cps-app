@@ -20,6 +20,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use App\Http\Responses\CustomLoginResponse;
+
 
 class AdminPanelProvider extends PanelProvider
 {
