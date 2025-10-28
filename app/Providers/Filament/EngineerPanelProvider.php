@@ -27,7 +27,7 @@ class EngineerPanelProvider extends PanelProvider
         return $panel
             ->id('engineer')
             ->path('engineer')
-            ->login()
+            // ->login()
             ->registration(false) // No public registration
             ->passwordReset() // Allow password reset
             ->emailVerification()
