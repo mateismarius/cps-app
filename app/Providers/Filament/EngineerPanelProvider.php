@@ -19,6 +19,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Responses\CustomLoginResponse;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 
 class EngineerPanelProvider extends PanelProvider
 {
@@ -28,6 +30,9 @@ class EngineerPanelProvider extends PanelProvider
             ->id('engineer')
             ->path('engineer')
             ->login()
+            ->bootUsing(function () {
+            $this->app->bind(LoginResponse::class, CustomLoginResponse::class);
+        })
             ->registration(false) // No public registration
             ->passwordReset() // Allow password reset
             ->emailVerification()
