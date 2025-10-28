@@ -40,12 +40,5 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Redirect engineers to their panel after login
-        Event::listen(Login::class, function (Login $event) {
-            if ($event->user->hasRole('engineer') && !$event->user->hasRole('super_admin')) {
-                session()->put('url.intended', '/engineer');
-            }
-        });
-
     }
 }
