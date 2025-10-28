@@ -14,6 +14,13 @@ class CustomLoginResponse implements LoginResponse
         $user = auth()->user();
         $panel = Filament::getCurrentPanel();
 
+        // DEBUGGING - write to a file to verify this runs
+        file_put_contents(
+            storage_path('logs/custom-login-debug.log'),
+            date('Y-m-d H:i:s') . " - User: {$user->email}, Panel: {$panel->getId()}, Roles: " . $user->roles->pluck('name')->implode(',') . "\n",
+            FILE_APPEND
+        );
+
         // If logging in from engineer panel, stay there
         if ($panel->getId() === 'engineer') {
             return redirect('/engineer');
