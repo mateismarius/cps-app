@@ -44,7 +44,7 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * Determine which Filament panels the user can access
+     * Determine which Filament panels the user can access and redirect
      */
     public function canAccessPanel(Panel $panel): bool
     {
